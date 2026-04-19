@@ -1,0 +1,12 @@
+Tilt {
+    background: linear-gradient(to left, #0a2a88, #59cde9);
+}
+
+.dimension {
+    height: 150px;
+    width: 150px;
+}
+
+.logo {
+    padding-top: 5px;
+}
