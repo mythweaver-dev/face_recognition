@@ -3,14 +3,18 @@ import Logo from './components/logo/Logo'
 import ImageLinkForm from './components/image_link_form/ImageLinkForm'
 import Rank from './components/rank/Rank'
 import FaceRecognition from './components/face_recognition/FaceRecognition'
+import SignIn from './components/signin/SignIn'
+import Register from './components/register/Register'
 import ParticlesBg from 'particles-bg'
-import { useState } from 'react'
+import { use, useState } from 'react'
 import './App.css'
 
 const App  = () => {
   const [input, setInput] = useState('');
   const [imageUrl, setImageUrl] = useState('')
   const [box, setBox] = useState({})
+  const [route, setRoute] = useState('signin')
+  const [isSignIn, setIsSignIn] = useState(false)
 
   const onInputChange = (event) => {
     setInput(event.target.value)
@@ -31,7 +35,6 @@ const App  = () => {
   }
 
   const displayFaceBox = (box) => {
-    console.log(box)
     setBox(box)
   }
 
@@ -87,13 +90,23 @@ const App  = () => {
   const onSubmit = () => {
     onButtonSubmit(setUpClarifai())
   }
+
+  const onRouteChange = (route) => {
+    if (route === 'signout') {
+      setIsSignIn(false)
+    } else if (route === 'home') {
+      setIsSignIn(true)
+    }
+    setRoute(route)
+  }
   return (
     <>
-      <Navigation />
-      <Logo />
+      <Navigation isSignedIn={isSignIn} onRouteChange={onRouteChange} />
+      {route === 'home' ? <div><Logo />
       <Rank />
       <ImageLinkForm value={input} onInputChange={onInputChange} onSubmit={onSubmit} />
-      <FaceRecognition box={box} imageUrl={imageUrl}/>
+      <FaceRecognition box={box} imageUrl={imageUrl}/></div>: ( route === 'signin' ? <SignIn onRouteChange={onRouteChange}/> : <Register onRouteChange={onRouteChange} />)
+      }
       <ParticlesBg type="circle" bg={true} />
     </>
   )
